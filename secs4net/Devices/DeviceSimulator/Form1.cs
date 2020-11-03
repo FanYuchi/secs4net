@@ -8,12 +8,14 @@ using Secs4Net.Sml;
 
 namespace SecsDevice
 {
-    public partial class Form1 : Form {
+    public partial class Form1 : Form
+    {
         SecsGem _secsGem;
         readonly ISecsGemLogger _logger;
         readonly BindingList<PrimaryMessageWrapper> recvBuffer = new BindingList<PrimaryMessageWrapper>();
 
-        public Form1() {
+        public Form1() 
+        {
             InitializeComponent();
 
             radioActiveMode.DataBindings.Add("Enabled", btnEnable, "Enabled");
@@ -40,7 +42,7 @@ namespace SecsDevice
 
             _secsGem.ConnectionChanged += delegate
             {
-                this.Invoke((MethodInvoker)delegate
+                Invoke((MethodInvoker)delegate
                 {
                     lbStatus.Text = _secsGem.State.ToString();
                 });
@@ -55,7 +57,7 @@ namespace SecsDevice
 
         private void PrimaryMessageReceived(object sender, PrimaryMessageWrapper e)
         {
-            this.Invoke(new MethodInvoker(() => recvBuffer.Add(e)));
+            Invoke(new MethodInvoker(() => recvBuffer.Add(e)));
         }
 
         private void btnDisable_Click(object sender, EventArgs e)
@@ -109,7 +111,9 @@ namespace SecsDevice
         {
             var recv = lstUnreplyMsg.SelectedItem as PrimaryMessageWrapper;
             if (recv == null)
+            {
                 return;
+            }
 
             await recv.ReplyAsync(null);
 
